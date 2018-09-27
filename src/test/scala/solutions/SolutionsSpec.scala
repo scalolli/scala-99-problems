@@ -9,10 +9,18 @@ class SolutionsSpec
     with Matchers
     with GeneratorDrivenPropertyChecks {
 
-  it("should find the last element of a list") {
+  it("Find the last element of a list.") {
     forAll(arbitrary[List[String]]) { xs =>
-      xs.lastOption shouldBe (Solutions.head(xs))
+      (Solutions.head(xs)) shouldBe xs.lastOption
     }
   }
 
+  it("Find the last but one element of a list.") {
+    forAll(arbitrary[List[String]]) { xs =>
+      if(xs.length >= 2)
+        (Solutions.penultimate(xs)) shouldBe Some(xs(xs.length - 1))
+      else
+        Solutions.penultimate(xs) shouldBe None
+    }
+  }
 }
