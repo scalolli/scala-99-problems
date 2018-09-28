@@ -8,8 +8,18 @@ object Solutions {
   }
 
   def penultimate[A](xs: List[A]): Option[A] = xs match {
-    case Nil => None
-    case x:: y:: Nil => Some(y)
-    case _ :: xs => penultimate(xs)
+    case Nil           => None
+    case x :: y :: Nil => Some(y)
+    case _ :: xs       => penultimate(xs)
+  }
+
+  def element[A](list: List[A], index: Int): Option[A] = {
+    def internal(xs: List[A], currentIndex: Int): Option[A] = xs match {
+      case Nil                               => None
+      case x :: _ if (currentIndex == index) => Some(x)
+      case _ :: tail                         => internal(tail, currentIndex + 1)
+    }
+
+    internal(list, 0)
   }
 }
