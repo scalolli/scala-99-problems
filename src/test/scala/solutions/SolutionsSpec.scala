@@ -4,20 +4,21 @@ import org.scalacheck.Arbitrary._
 import org.scalacheck.Gen
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FunSpec, Matchers}
+import Solutions._
 
 class SolutionsSpec extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   it("Find the last element of a list.") {
     forAll(arbitrary[List[String]]) { xs =>
-      (Solutions.head(xs)) shouldBe xs.lastOption
+      head(xs) shouldBe xs.lastOption
     }
   }
 
   it("Find the last but one element of a list.") {
     forAll(arbitrary[List[String]]) { xs =>
-      if (xs.length >= 2) Solutions.penultimate(xs) shouldBe Some(xs(xs.length - 1))
+      if (xs.length >= 2) penultimate(xs) shouldBe Some(xs(xs.length - 1))
       else
-        Solutions.penultimate(xs) shouldBe None
+        penultimate(xs) shouldBe None
     }
   }
 
@@ -31,7 +32,7 @@ class SolutionsSpec extends FunSpec with Matchers with GeneratorDrivenPropertyCh
     forAll(genTestData) { testData =>
       import testData._
 
-      Solutions.element(xs, index) should be(Some(xs(index)))
+      element(xs, index) should be(Some(xs(index)))
     }
   }
 
@@ -43,8 +44,26 @@ class SolutionsSpec extends FunSpec with Matchers with GeneratorDrivenPropertyCh
 
   it("Reverse a list.") {
     forAll(arbitrary[List[String]]) { xs =>
-      Solutions.reverse(xs) should be(xs.reverse)
+      reverse(xs) should be(xs.reverse)
     }
+  }
+
+  it("Find out whether a list is a palindrome.") {
+    forAll(arbitrary[List[String]]) { xs =>
+      isPalindrome(xs) should be(xs == xs.reverse)
+    }
+  }
+
+  it("Flatten a nested list structure.") {
+    forAll(arbitrary[List[List[Int]]]) { xs =>
+      flatten(xs) should be(xs.flatten)
+    }
+
+    flatten(List(List(1, 2, 3), 4, List(5, 6))) should be(List(1, 2, 3, 4, 5, 6))
+  }
+
+  it("Eliminate consecutive duplicates of list elements.") {
+    compress(List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)) should be(List('a, 'b, 'c, 'a, 'd, 'e))
   }
 
 }

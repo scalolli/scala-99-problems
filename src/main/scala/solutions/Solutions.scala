@@ -1,7 +1,6 @@
 package solutions
 
 object Solutions {
-
   def head[A](l: List[A]): Option[A] = l match {
     case Nil         => None
     case last :: Nil => Some(last)
@@ -40,5 +39,27 @@ object Solutions {
     }
 
     internal(xs, List.empty)
+  }
+
+  def isPalindrome[A](xs: List[A]) = reverse(xs) == xs
+
+  // todo: could we use somehow union types from shapeless??
+  def flatten[A](xs: List[Any]): List[Any] = {
+    def internal(ls: List[Any], acc: List[Any]): List[Any] = ls match {
+      case Nil                     => acc
+      case (head: List[_]) :: tail => internal(tail, acc ++ head)
+      case head :: tail            => internal(tail, acc ++ List(head))
+    }
+
+    internal(xs, List.empty)
+  }
+
+  def compress[A](xs: List[A]): List[A] = {
+    def internal(l: List[A], acc: List[A], currentElement: A): List[A] = l match {
+      case Nil       => acc
+      case x :: tail => if (x == currentElement) internal(tail, acc, currentElement) else internal(tail, acc :+ x, x)
+    }
+
+    if (xs.isEmpty) Nil else internal(xs.tail, List(xs.head), xs.head)
   }
 }
