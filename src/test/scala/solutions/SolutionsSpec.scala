@@ -35,4 +35,16 @@ class SolutionsSpec extends FunSpec with Matchers with GeneratorDrivenPropertyCh
     }
   }
 
+  it("Find the number of elements of a list.") {
+    forAll(arbitrary[List[Int]]) { xs =>
+      Solutions.size(xs) should be(xs.size)
+    }
+  }
+
+  it("Reverse a list.") {
+    forAll(arbitrary[List[String]]) { xs =>
+      Solutions.reverse(xs) should be(xs.reverse)
+    }
+  }
+
 }
